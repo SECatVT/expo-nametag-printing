@@ -1,3 +1,7 @@
+class GeneralConfig:
+    
+    CURRENT_YEAR = 2023
+
 class NameTagConfig:
 
     years = [
@@ -83,12 +87,47 @@ class QueryConfig:
                 firstName
                 lastName
                 jobTitle
-                secondJobTitle
                 photoUrl
                 organization
                 websiteUrl
                 biography
-                tags
+                withEvent(eventId: $eventId) {
+                    fields {
+                        ... on MultipleSelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on SelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on TextField {
+                            value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    badges {
+                        ... on BadgeBarcode {
+                            barcode
+                        }
+                    }
+                }
                 isVisible
                 source
                 createdAt
@@ -110,12 +149,47 @@ class QueryConfig:
                 firstName
                 lastName
                 jobTitle
-                secondJobTitle
                 photoUrl
                 organization
                 websiteUrl
                 biography
-                tags
+                withEvent(eventId: $eventId) {
+                    fields {
+                        ... on MultipleSelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on SelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on TextField {
+                            value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    badges {
+                        ... on BadgeBarcode {
+                            barcode
+                        }
+                    }
+                }
                 isVisible
                 source
                 createdAt
