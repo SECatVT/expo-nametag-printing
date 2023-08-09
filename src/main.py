@@ -7,7 +7,7 @@ from config import GeneralConfig, NameTagConfig, QueryConfig
 # verify event
 EVENT_ID = QueryConfig.event_id
 event = query.event_query(EVENT_ID).json()
-print(event['data']['event']['title'])
+print(event['data']['event']['title'] + '\n')
 
 # set up simple GUI
 sg.theme("SystemDefaultForReal")

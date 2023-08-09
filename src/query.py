@@ -11,15 +11,15 @@ def event_query(event_id):
     variables = {
         "eventId": event_id
     }
-    
-    response = requests.post(url=URL, headers=headers, 
-                             json={'query': query, 'variables': variables})
+
+    response = requests.post(url=URL, headers=headers,
+                             json={'query': query, 'variables': variables}, timeout=5)
 
     # Check if the request was successful
     if not response.status_code == 200:
         # Raise the error if the request failed
         raise EXPOEventNotFoundError(response.status_code, response.text)
-    
+
     return response
 
 
@@ -33,7 +33,7 @@ def people_search_query(event_id, search):
     }
 
     response = requests.post(url=URL, headers=headers, 
-                             json={'query': query, 'variables': variables})
+                             json={'query': query, 'variables': variables}, timeout=5)
 
     # Check if the request was successful
     if not response.status_code == 200:
@@ -53,7 +53,7 @@ def people_filter_query(event_id, filters):
     }
 
     response = requests.post(url=URL, headers=headers, 
-                             json={'query': query, 'variables': variables})
+                             json={'query': query, 'variables': variables}, timeout=5)
 
     # Check if the request was successful
     if not response.status_code == 200:
