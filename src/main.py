@@ -18,6 +18,7 @@ NODE = GeneralConfig.NODE
 FIRST_NAME = GeneralConfig.FIRST_NAME
 LAST_NAME = GeneralConfig.LAST_NAME
 EMAIL = GeneralConfig.EMAIL
+PHONE_NUMBER = GeneralConfig.PHONE_NUMBER
 DEFINITION = GeneralConfig.DEFINITION
 TRANSLATION = GeneralConfig.TRANSLATION
 
@@ -96,8 +97,6 @@ while True:
                 people_search += '@vt.edu'
             person = query.people_search_query(EVENT_ID, people_search)
 
-            print(person.json())
-
             if person.json()[DATA][EVENT_PERSON][NODE] == []:
                 print("Warning - Invaild PID/VT email. EventPerson can not be resolved.")
                 continue
@@ -111,6 +110,8 @@ while True:
         first_name = eventPerson[FIRST_NAME]
         last_name = eventPerson[LAST_NAME]
         email = eventPerson[EMAIL]
+        if not eventPerson[PHONE_NUMBER] == []:
+            phone_number = eventPerson[PHONE_NUMBER][0]["number"]
 
         # Fetch major & year from fields - only the first major is recorded
         fields = eventPerson['withEvent']['fields']
@@ -126,7 +127,9 @@ while True:
                 graduation_time = field[TRANSLATION][0]['value']
                 if not graduation_time == "None" or not graduation_time == "Other":
                     graduation_year = int(graduation_time[-4:])
-                    year = NameTagConfig.years[4 + GeneralConfig.CURRENT_YEAR - graduation_year]
+                    if "Spring" in graduation_time:
+                        graduation_year -= 1
+                    year = NameTagConfig.years[3 + GeneralConfig.CURRENT_YEAR - graduation_year]
 
                 else: year = graduation_time
 
@@ -149,6 +152,9 @@ while True:
     now_time = now_datetime.strftime("%H:%M:%S")
     organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
     work_sheet.update(cell_range(row_insert), organized_data)
+
+    # Terminal output for Google Sheet log Confirmation
+    print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
 
     # Index increment
     row_insert += 1

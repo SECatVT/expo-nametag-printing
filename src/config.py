@@ -16,6 +16,7 @@ class GeneralConfig:
     FIRST_NAME = "firstName"
     LAST_NAME = "lastName"
     EMAIL = "email"
+    PHONE_NUMBER = "phoneNumbers"
     DEFINITION = "definition"
     TRANSLATION = "translations"
 
@@ -103,6 +104,9 @@ class QueryConfig:
                 email
                 firstName
                 lastName
+                phoneNumbers {
+                    number
+                }
                 jobTitle
                 photoUrl
                 organization
@@ -165,6 +169,9 @@ class QueryConfig:
                 email
                 firstName
                 lastName
+                phoneNumbers {
+                    number
+                }
                 jobTitle
                 photoUrl
                 organization
