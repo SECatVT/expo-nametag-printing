@@ -23,7 +23,7 @@ DEFINITION = GeneralConfig.DEFINITION
 TRANSLATION = GeneralConfig.TRANSLATION
 
 EVENT_ID = QueryConfig.event_id
-HEADER_FONT = ("Calibri", 22)
+DEFAULT_FONT = ("Calibri", 22)
 INPUT_FONT = ("Courier", 20)
 TEXT_SIZE = (15, 1)
 
@@ -33,7 +33,7 @@ print(event['data']['event']['title'] + '\n')
 
 # set up simple GUI
 sg.theme("SystemDefaultForReal")
-sg.set_options(font=HEADER_FONT)
+sg.set_options(font=DEFAULT_FONT)
 
 # set up Google Sheet Log
 service_account = gspread.service_account(filename=GeneralConfig.GOOGLE_LOG_KEYFILE_NAME)
@@ -42,33 +42,37 @@ work_sheet = log_sheet.worksheet(GeneralConfig.WORKSHEET_NAME)
 end_cell = work_sheet.find(GeneralConfig.GOOGLE_LOG_END_TOKEN)
 row_insert = end_cell.row
 
-def text_creater(text_content):
+# private utility functions
+def _text_creater(text_content):
     return sg.Text(text=text_content, size=TEXT_SIZE, font=INPUT_FONT)
 
-def cell_range(row):
+def _cell_range(row):
     return "A" + str(row) + ":I" + str(row)
 
 # design the GUI
-input1 = [text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
-input2 = [text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
+input1 = [_text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
+input2 = [_text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
+year_overwrite = [sg.Checkbox("Overwrite Grade Level (enable by checkbox)", key="OWGLConfirm"),
+                  sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="OWYR")]
 
-backup_fn = [text_creater("First Name"), sg.InputText(do_not_clear=False, key="FN")]
-backup_ln = [text_creater("Last Name"), sg.InputText(do_not_clear=False, key="LN")]
-backup_major = [text_creater("Major"),
+backup_fn = [_text_creater("First Name"), sg.InputText(do_not_clear=False, key="FN")]
+backup_ln = [_text_creater("Last Name"), sg.InputText(do_not_clear=False, key="LN")]
+backup_major = [_text_creater("Major"),
             sg.Combo(list(NameTagConfig.majors), default_value="Aerospace Engineering", key="MJ")]
-backup_year = [text_creater("Year"),
+backup_year = [_text_creater("Year"),
             sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="YR")]
-backup_r_id = [text_creater("Registration ID"),
+backup_r_id = [_text_creater("Registration ID"),
              sg.InputText(do_not_clear=False, default_text="123456", key="RID")]
 backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id]
 
 layout = [
     [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
-    [sg.Text("Option 2 - Input VT PID")], input2,
-    [sg.Checkbox("Manual Input Backup (enable by checking the box)", key="MIConfirm")], *backup,
-    [sg.Submit()]
+    [sg.Text("Option 2 - Input VT PID")], input2, year_overwrite,
+    [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="MIConfirm")], *backup,
+    [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
-window = sg.Window("Engineering Expo", layout, size=(800, 600))
+window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
+                   layout, size=(800, 610))
 
 while True:
     event, inputs = window.read()
@@ -122,7 +126,7 @@ while True:
                 major = field[TRANSLATION][0]['value']
                 first_major_flag = False
 
-            if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
+            if not inputs["OWGLConfirm"] and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
                 # SelectField query structure
                 graduation_time = field[TRANSLATION][0]['value']
                 if not graduation_time == "None" or not graduation_time == "Other":
@@ -135,6 +139,9 @@ while True:
 
         badges = eventPerson['withEvent']['badges']
         regis_id = badges[0]['barcode']
+
+        if inputs["OWGLConfirm"]:
+            year = inputs["OWYR"]
 
     # Parse, well barely, from manual inputs
     else:
@@ -151,7 +158,7 @@ while True:
     now_date = now_datetime.strftime("%m/%d/%Y")
     now_time = now_datetime.strftime("%H:%M:%S")
     organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
-    work_sheet.update(cell_range(row_insert), organized_data)
+    work_sheet.update(_cell_range(row_insert), organized_data)
 
     # Terminal output for Google Sheet log Confirmation
     print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
