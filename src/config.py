@@ -1,3 +1,25 @@
+class GeneralConfig:
+    
+    CURRENT_YEAR = 2023
+
+    # google sheet log configs
+    GOOGLE_LOG = True
+    GOOGLE_LOG_END_TOKEN = "---END---"
+    GOOGLE_LOG_KEYFILE_NAME = "google_log_service_account.json"
+    GOOGLE_LOG_SHEET_NAME = "testPythonLog"
+    WORKSHEET_NAME = "Log1"
+
+    # query structure keys
+    DATA = "data"
+    EVENT_PERSON = "eventPerson"
+    NODE = "nodes"
+    FIRST_NAME = "firstName"
+    LAST_NAME = "lastName"
+    EMAIL = "email"
+    PHONE_NUMBER = "phoneNumbers"
+    DEFINITION = "definition"
+    TRANSLATION = "translations"
+
 class NameTagConfig:
 
     years = [
@@ -82,13 +104,51 @@ class QueryConfig:
                 email
                 firstName
                 lastName
+                phoneNumbers {
+                    number
+                }
                 jobTitle
-                secondJobTitle
                 photoUrl
                 organization
                 websiteUrl
                 biography
-                tags
+                withEvent(eventId: $eventId) {
+                    fields {
+                        ... on MultipleSelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on SelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on TextField {
+                            value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    badges {
+                        ... on BadgeBarcode {
+                            barcode
+                        }
+                    }
+                }
                 isVisible
                 source
                 createdAt
@@ -109,13 +169,51 @@ class QueryConfig:
                 email
                 firstName
                 lastName
+                phoneNumbers {
+                    number
+                }
                 jobTitle
-                secondJobTitle
                 photoUrl
                 organization
                 websiteUrl
                 biography
-                tags
+                withEvent(eventId: $eventId) {
+                    fields {
+                        ... on MultipleSelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on SelectField {
+                            translations {
+                                value
+                            }
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                        ... on TextField {
+                            value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
+                    }
+                    badges {
+                        ... on BadgeBarcode {
+                            barcode
+                        }
+                    }
+                }
                 isVisible
                 source
                 createdAt
