@@ -1,4 +1,6 @@
 from datetime import datetime
+import pathlib
+import time
 import warnings
 
 import gspread
@@ -26,6 +28,14 @@ EVENT_ID = QueryConfig.event_id
 DEFAULT_FONT = ("Calibri", 22)
 INPUT_FONT = ("Courier", 20)
 TEXT_SIZE = (15, 1)
+
+# printer dispatch
+printer = Dispatch("Dymo.DymoAddIn")
+print(printer.GetDymoPrinters())
+label_path = pathlib.Path("./src/label/student_badge.label")
+printer.SelectPrinter(printer.GetDymoPrinters())
+printer.Open(label_path)
+label = Dispatch("Dymo.DymoLabels")
 
 # verify event
 event = query.event_query(EVENT_ID).json()
@@ -72,11 +82,15 @@ layout = [
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
-                   layout, size=(800, 610))
+                   layout, size=(2400, 1200))
 
+timePrev = time.time()
 while True:
     event, inputs = window.read()
     print(event, inputs)
+    if time.time() - timePrev < 3:
+        continue
+    timePrev = time.time()
     if event in (sg.WIN_CLOSED, 'Exit'):
         break
 
@@ -90,16 +104,22 @@ while True:
             people_filter = {'qrCodes': inputs['BRID']}
             person = query.people_filter_query(EVENT_ID, people_filter)
 
+            print(person.json())
+
             if person.json()[DATA][EVENT_PERSON][NODE] == []:
                 print("Warning - Invaild registration ID. EventPerson can not be resolved.")
                 continue
 
         # Option 2 - Search by PID or VT email
         elif not inputs['PID'] == '':
-            people_search = inputs['PID']
-            if not '@' in people_search:
-                people_search += '@vt.edu'
-            person = query.people_search_query(EVENT_ID, people_search)
+            # people_search = inputs['PID']
+            pid = inputs['PID']
+            if not '@' in pid:
+                pid += '@vt.edu'
+            people_filter = {'emails': pid}
+            person = query.people_filter_query(EVENT_ID, people_filter)
+
+            print(person.json())
 
             if person.json()[DATA][EVENT_PERSON][NODE] == []:
                 print("Warning - Invaild PID/VT email. EventPerson can not be resolved.")
@@ -163,8 +183,19 @@ while True:
     # Terminal output for Google Sheet log Confirmation
     print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
 
+    # Print job
+    label.SetField("fn", first_name)
+    label.SetField("ln", last_name)
+    label.SetField("y", year)
+    label.SetField("m", major)
+
+    printer.StartPrintJob()
+    printer.Print(1, False)
+    printer.EndPrintJob()
+
     # Index increment
     row_insert += 1
 
 work_sheet.update('A' + str(row_insert), GeneralConfig.GOOGLE_LOG_END_TOKEN)
+printer.EndPrintJob()
 window.close()
