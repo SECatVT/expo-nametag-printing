@@ -50,7 +50,6 @@ service_account = gspread.service_account(filename=GeneralConfig.GOOGLE_LOG_KEYF
 log_sheet = service_account.open(GeneralConfig.GOOGLE_LOG_SHEET_NAME)
 work_sheet = log_sheet.worksheet(GeneralConfig.WORKSHEET_NAME)
 end_cell = work_sheet.find(GeneralConfig.GOOGLE_LOG_END_TOKEN)
-row_insert = end_cell.row
 
 # private utility functions
 def _text_creater(text_content):
@@ -58,6 +57,15 @@ def _text_creater(text_content):
 
 def _cell_range(row):
     return "A" + str(row) + ":I" + str(row)
+
+def _check_row_insert(check_cell):
+    backup_row = 1
+    if check_cell is None:
+        while not work_sheet.cell(backup_row,1).value is None:
+            backup_row += 1
+        return backup_row
+    else:
+        return check_cell.row
 
 # design the GUI
 input1 = [_text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
@@ -82,7 +90,11 @@ layout = [
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
                    layout, size=(2400, 1200))
 
+# confirm inserting row number
+row_insert = _check_row_insert(end_cell)
+# record start time as timestamp for a previous event
 timePrev = time.time()
+
 while True:
     event, inputs = window.read()
     print(event, inputs)
