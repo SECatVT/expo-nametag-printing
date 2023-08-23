@@ -47,7 +47,8 @@ class NameTagConfig:
         "Materials Science Engineering",
         "Mechanical Engineering",
         "Mining Engineering",
-        "Ocean Engineering"
+        "Ocean Engineering",
+        "Non-Engineering"
         ]
 
 class QueryConfig: 

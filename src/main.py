@@ -32,7 +32,7 @@ TEXT_SIZE = (15, 1)
 # printer dispatch
 printer = Dispatch("Dymo.DymoAddIn")
 print(printer.GetDymoPrinters())
-label_path = pathlib.Path("./src/label/student_badge.label")
+label_path = pathlib.Path("./src/label/student_badge_v2.label")
 printer.SelectPrinter(printer.GetDymoPrinters())
 printer.Open(label_path)
 label = Dispatch("Dymo.DymoLabels")
@@ -62,8 +62,6 @@ def _cell_range(row):
 # design the GUI
 input1 = [_text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
 input2 = [_text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
-year_overwrite = [sg.Checkbox("Overwrite Grade Level (enable by checkbox)", key="OWGLConfirm"),
-                  sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="OWYR")]
 
 backup_fn = [_text_creater("First Name"), sg.InputText(do_not_clear=False, key="FN")]
 backup_ln = [_text_creater("Last Name"), sg.InputText(do_not_clear=False, key="LN")]
@@ -77,7 +75,7 @@ backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id]
 
 layout = [
     [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
-    [sg.Text("Option 2 - Input VT PID")], input2, year_overwrite,
+    [sg.Text("Option 2 - Input VT PID")], input2,
     [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="MIConfirm")], *backup,
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
@@ -146,22 +144,23 @@ while True:
                 major = field[TRANSLATION][0]['value']
                 first_major_flag = False
 
-            if not inputs["OWGLConfirm"] and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
+            if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
                 # SelectField query structure
-                graduation_time = field[TRANSLATION][0]['value']
-                if not graduation_time == "None" or not graduation_time == "Other":
-                    graduation_year = int(graduation_time[-4:])
-                    if "Spring" in graduation_time:
-                        graduation_year -= 1
-                    year = NameTagConfig.years[3 + GeneralConfig.CURRENT_YEAR - graduation_year]
+                year = field[TRANSLATION][0]['value']
 
-                else: year = graduation_time
+            # if not inputs["OWGLConfirm"] and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
+            #     # SelectField query structure
+            #     graduation_time = field[TRANSLATION][0]['value']
+            #     if not graduation_time == "None" or not graduation_time == "Other":
+            #         graduation_year = int(graduation_time[-4:])
+            #         if "Spring" in graduation_time:
+            #             graduation_year -= 1
+            #         year = NameTagConfig.years[3 + GeneralConfig.CURRENT_YEAR - graduation_year]
+
+            #     else: year = graduation_time
 
         badges = eventPerson['withEvent']['badges']
         regis_id = badges[0]['barcode']
-
-        if inputs["OWGLConfirm"]:
-            year = inputs["OWYR"]
 
     # Parse, well barely, from manual inputs
     else:
@@ -188,6 +187,7 @@ while True:
     label.SetField("ln", last_name)
     label.SetField("y", year)
     label.SetField("m", major)
+    label.SetField("BARCODE", regis_id)
 
     printer.StartPrintJob()
     printer.Print(1, False)
