@@ -29,14 +29,6 @@ DEFAULT_FONT = ("Calibri", 22)
 INPUT_FONT = ("Courier", 20)
 TEXT_SIZE = (15, 1)
 
-# printer dispatch
-printer = Dispatch("Dymo.DymoAddIn")
-print(printer.GetDymoPrinters())
-label_path = pathlib.Path("./src/label/student_badge_v2.label")
-printer.SelectPrinter(printer.GetDymoPrinters())
-printer.Open(label_path)
-label = Dispatch("Dymo.DymoLabels")
-
 # verify event
 event = query.event_query(EVENT_ID).json()
 print(event['data']['event']['title'] + '\n')
@@ -67,6 +59,25 @@ def _check_row_insert(check_cell):
     else:
         return check_cell.row
 
+def _printer_set_up():
+    try:
+        dymo_printer = Dispatch("Dymo.DymoAddIn")
+        print(printer.GetDymoPrinters())
+        label_path = pathlib.Path("./src/label/student_badge_v2.label")
+        dymo_printer.SelectPrinter(printer.GetDymoPrinters())
+        dymo_printer.Open(label_path)
+        dymo_label = Dispatch("Dymo.DymoLabels")
+
+    except Exception as dymo_err:
+        dymo_printer = None
+        dymo_label = None
+        print("No Printer Found ", dymo_err)
+
+    return dymo_printer, dymo_label
+
+# printer dispatch
+printer, label = _printer_set_up()
+
 # design the GUI
 input1 = [_text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
 input2 = [_text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
@@ -79,7 +90,11 @@ backup_year = [_text_creater("Year"),
             sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="YR")]
 backup_r_id = [_text_creater("Registration ID"),
              sg.InputText(do_not_clear=False, default_text="123456", key="RID")]
-backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id]
+backup_email = [_text_creater("VT Email"),
+             sg.InputText(do_not_clear=False, default_text="hokie@vt.edu", key="VTEML")]
+backup_phone = [_text_creater("Phone Number"),
+             sg.InputText(do_not_clear=False, default_text="(123)-456-7890", key="PHONE")]
+backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id, backup_email, backup_phone]
 
 layout = [
     [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
@@ -88,7 +103,7 @@ layout = [
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
-                   layout, size=(2400, 1200))
+                   layout, size=(2400, 1300))
 
 # confirm inserting row number
 row_insert = _check_row_insert(end_cell)
@@ -176,14 +191,18 @@ while True:
 
     # Parse, well barely, from manual inputs
     else:
-        first_name, last_name, major, year, regis_id = [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID')]
+        first_name, last_name, major, year, regis_id, email, phone_number = \
+            [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
+
+    if "general" in major.lower():
+        year = NameTagConfig.years[0]
 
     # Terminal output for student info
     print('#'*10 + ' NameTag Info ' + '#'*10 +
           f"\n{'First Name:':<20}{first_name}" + f"\n{'Last Name:':<20}{last_name}" +
           f"\n{'Major:':<20}{major}" + f"\n{'Year:':<20}{year}" +
           f"\n{'Registration ID:':<20}{regis_id}\n")
-    
+
     # Log the query or inputed student record to a pre-established Google Sheet
     now_datetime = datetime.now()
     now_date = now_datetime.strftime("%m/%d/%Y")
@@ -194,16 +213,24 @@ while True:
     # Terminal output for Google Sheet log Confirmation
     print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
 
-    # Print job
-    label.SetField("fn", first_name)
-    label.SetField("ln", last_name)
-    label.SetField("y", year)
-    label.SetField("m", major)
-    label.SetField("BARCODE", regis_id)
+    if printer is not None and label is not None:
+        try:
+            # Print job
+            label.SetField("fn", first_name)
+            label.SetField("ln", last_name)
+            label.SetField("y", year)
+            label.SetField("m", major)
+            label.SetField("BARCODE", regis_id)
 
-    printer.StartPrintJob()
-    printer.Print(1, False)
-    printer.EndPrintJob()
+            printer.StartPrintJob()
+            printer.Print(1, False)
+            printer.EndPrintJob()
+
+            print("\nPrint Success\n")
+
+        except Exception as err:
+            printer.EndPrintJob()
+            print("\nPrinting Not Resolved - ", err, "\n")
 
     # Index increment
     row_insert += 1

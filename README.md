@@ -4,14 +4,14 @@
 I am sure you will figure it out
 
 ## Feature Demoed
-- [ ] Scan event registration ID and submit query an event participant on SwapCard API
+- [x] Scan event registration ID and submit query an event participant on SwapCard API
 
-- [ ] Accept VT PID or email and query an event participant on SwapCard API
+- [x] Accept VT PID or email and query an event participant on SwapCard API
 
-- [ ] Backup input that organizes a customized event participant record
+- [x] Backup input that organizes a customized event participant record
 
-- [ ] Manual overwrite grade level setting for an event participant
+- [x] Manual overwrite grade level setting for an event participant
 
-- [ ] Dynamically log an event participant record to machine specfied Google worksheet
+- [x] Dynamically log an event participant record to machine specfied Google worksheet
 
-- [ ] Dynamically merge all records to a master sheet sorted by record timestamp
+- [x] Dynamically merge all records to a master sheet sorted by record timestamp
