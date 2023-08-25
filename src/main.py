@@ -236,5 +236,6 @@ while True:
     row_insert += 1
 
 work_sheet.update('A' + str(row_insert), GeneralConfig.GOOGLE_LOG_END_TOKEN)
-printer.EndPrintJob()
+if printer is not None:
+    printer.EndPrintJob()
 window.close()

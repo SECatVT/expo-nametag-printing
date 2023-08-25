@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DieCutLabel Version="8.0" Units="twips">
+	<PaperOrientation>Landscape</PaperOrientation>
+	<Id>NameBadgeCard</Id>
+	<IsOutlined>false</IsOutlined>
+	<PaperName>30856 Badge Card Label - offset</PaperName>
+	<DrawCommands>
+		<Path>
+			<FillMode>EvenOdd</FillMode>
+			<Line X1="3509" Y1="0" X2="3509" Y2="6000" />
+			<LineTo X="517" Y="6000" />
+			<Arc CenterX="432" CenterY="6000" Radius="85" StartAngle="0" EndAngle="90" />
+			<LineTo X="0" Y="5915" />
+			<LineTo X="0" Y="85" />
+			<LineTo X="432" Y="85" />
+			<Arc CenterX="432" CenterY="0" Radius="85" StartAngle="-90" EndAngle="0" />
+			<LineTo X="3509" Y="0" />
+			<RoundRectangle X="2969" Y="2640" Width="180" Height="720" Rx="120" Ry="120" />
+		</Path>
+	</DrawCommands>
+	<ObjectInfo>
+		<TextObject>
+			<Name>fn</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<HorizontalAlignment>Left</HorizontalAlignment>
+			<VerticalAlignment>Top</VerticalAlignment>
+			<TextFitMode>None</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String xml:space="preserve">FIRST NAME</String>
+					<Attributes>
+						<Font Family="Segoe UI" Size="28" Bold="True" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="450" Y="720" Width="5377" Height="864" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<TextObject>
+			<Name>ln</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<HorizontalAlignment>Left</HorizontalAlignment>
+			<VerticalAlignment>Top</VerticalAlignment>
+			<TextFitMode>None</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String xml:space="preserve">LAST NAME</String>
+					<Attributes>
+						<Font Family="Segoe UI" Size="14" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="450" Y="1514.4" Width="5377" Height="720" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<TextObject>
+			<Name>y</Name>
+			<ForeColor Alpha="255" Red="100" Green="100" Blue="100" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<HorizontalAlignment>Left</HorizontalAlignment>
+			<VerticalAlignment>Top</VerticalAlignment>
+			<TextFitMode>None</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String xml:space="preserve">YEAR</String>
+					<Attributes>
+						<Font Family="Segoe UI" Size="16" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="100" Green="100" Blue="100" HueScale="100" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="450" Y="230.4" Width="5377" Height="720" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<ShapeObject Stroke="SolidLine">
+			<Name>solidline</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<ShapeType>HorizontalLine</ShapeType>
+			<LineWidth>15</LineWidth>
+			<LineAlignment>Center</LineAlignment>
+			<FillColor Alpha="0" Red="255" Green="255" Blue="255" />
+		</ShapeObject>
+		<Bounds X="450" Y="2493" Width="3600" Height="15" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<ImageObject>
+			<Name>GRAPHIC</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<Image>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</Image>
+			<ScaleMode>Uniform</ScaleMode>
+			<BorderWidth>0</BorderWidth>
+			<BorderColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<HorizontalAlignment>Center</HorizontalAlignment>
+			<VerticalAlignment>Center</VerticalAlignment>
+		</ImageObject>
+		<Bounds X="4555" Y="115.520004272461" Width="1272" Height="779.999999999999" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<TextObject>
+			<Name>m</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<HorizontalAlignment>Left</HorizontalAlignment>
+			<VerticalAlignment>Top</VerticalAlignment>
+			<TextFitMode>None</TextFitMode>
+			<UseFullFontHeight>True</UseFullFontHeight>
+			<Verticalized>False</Verticalized>
+			<StyledText>
+				<Element>
+					<String xml:space="preserve">MAJOR</String>
+					<Attributes>
+						<Font Family="Segoe UI" Size="16" Bold="True" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
+					</Attributes>
+				</Element>
+			</StyledText>
+		</TextObject>
+		<Bounds X="450" Y="2620.52000427246" Width="5377" Height="720" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<ShapeObject Stroke="SolidLine">
+			<Name>major_dot</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<ShapeType>Ellipse</ShapeType>
+			<LineWidth>15</LineWidth>
+			<LineAlignment>Center</LineAlignment>
+			<FillColor Alpha="0" Red="255" Green="255" Blue="255" />
+		</ShapeObject>
+		<Bounds X="4651" Y="2356.52000427246" Width="1068" Height="984" />
+	</ObjectInfo>
+	<ObjectInfo>
+		<BarcodeObject>
+			<Name>BARCODE</Name>
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
+			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
+			<LinkedObjectName />
+			<Rotation>Rotation0</Rotation>
+			<IsMirrored>False</IsMirrored>
+			<IsVariable>False</IsVariable>
+			<GroupID>-1</GroupID>
+			<IsOutlined>False</IsOutlined>
+			<Text>12345</Text>
+			<Type>QRCode</Type>
+			<Size>Large</Size>
+			<TextPosition>None</TextPosition>
+			<TextFont Family="Arial" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+			<CheckSumFont Family="Arial" Size="8" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+			<TextEmbedding>None</TextEmbedding>
+			<ECLevel>0</ECLevel>
+			<HorizontalAlignment>Center</HorizontalAlignment>
+			<QuietZonesPadding Left="0" Top="0" Right="0" Bottom="0" />
+		</BarcodeObject>
+		<Bounds X="4493.66666666667" Y="963.333333333333" Width="1333.33333333333" Height="1206.66666666667" />
+	</ObjectInfo>
+</DieCutLabel>
