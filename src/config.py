@@ -113,6 +113,10 @@ class QueryConfig:
                 organization
                 websiteUrl
                 biography
+                tags
+                groups {
+                    name
+                }
                 withEvent(eventId: $eventId) {
                     fields {
                         ... on MultipleSelectField {
@@ -178,6 +182,10 @@ class QueryConfig:
                 organization
                 websiteUrl
                 biography
+                tags
+                groups {
+                    name
+                }
                 withEvent(eventId: $eventId) {
                     fields {
                         ... on MultipleSelectField {

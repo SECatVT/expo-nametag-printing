@@ -62,9 +62,9 @@ def _check_row_insert(check_cell):
 def _printer_set_up():
     try:
         dymo_printer = Dispatch("Dymo.DymoAddIn")
-        print(printer.GetDymoPrinters())
-        label_path = pathlib.Path("./src/label/student_badge_v2.label")
-        dymo_printer.SelectPrinter(printer.GetDymoPrinters())
+        print(dymo_printer.GetDymoPrinters())
+        label_path = pathlib.Path("./src/label/student_badge_v2.dymo")
+        dymo_printer.SelectPrinter(dymo_printer.GetDymoPrinters())
         dymo_printer.Open(label_path)
         dymo_label = Dispatch("Dymo.DymoLabels")
 
