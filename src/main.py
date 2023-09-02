@@ -31,7 +31,7 @@ TEXT_SIZE = (15, 1)
 
 # verify event
 event = query.event_query(EVENT_ID).json()
-print(event['data']['event']['title'] + '\n')
+print(event['data']['event']['title'])
 
 # set up simple GUI
 sg.theme("SystemDefaultForReal")
@@ -85,15 +85,15 @@ input2 = [_text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
 backup_fn = [_text_creater("First Name"), sg.InputText(do_not_clear=False, key="FN")]
 backup_ln = [_text_creater("Last Name"), sg.InputText(do_not_clear=False, key="LN")]
 backup_major = [_text_creater("Major"),
-            sg.Combo(list(NameTagConfig.majors), default_value="Aerospace Engineering", key="MJ")]
+            sg.Combo(list(NameTagConfig.majors), default_value=NameTagConfig.majors[0], key="MJ")]
 backup_year = [_text_creater("Year"),
             sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="YR")]
 backup_r_id = [_text_creater("Registration ID"),
              sg.InputText(do_not_clear=False, default_text="123456", key="RID")]
 backup_email = [_text_creater("VT Email"),
-             sg.InputText(do_not_clear=False, default_text="hokie@vt.edu", key="VTEML")]
+             sg.InputText(do_not_clear=False, key="VTEML")]
 backup_phone = [_text_creater("Phone Number"),
-             sg.InputText(do_not_clear=False, default_text="(123)-456-7890", key="PHONE")]
+             sg.InputText(do_not_clear=False, key="PHONE")]
 backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id, backup_email, backup_phone]
 
 layout = [
@@ -193,6 +193,9 @@ while True:
     else:
         first_name, last_name, major, year, regis_id, email, phone_number = \
             [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
+        if email == "" or phone_number == "":
+            print("Warning - No Contact Information Provided")
+            continue
 
     # Special cases assignments
     if "freshman" in year.lower():
