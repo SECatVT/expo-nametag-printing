@@ -194,8 +194,8 @@ while True:
         first_name, last_name, major, year, regis_id, email, phone_number = \
             [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
 
-    if "general" in major.lower():
-        year = NameTagConfig.years[0]
+    if "freshman" in year.lower():
+        major = NameTagConfig.majors[10]
 
     # Terminal output for student info
     print('#'*10 + ' NameTag Info ' + '#'*10 +
