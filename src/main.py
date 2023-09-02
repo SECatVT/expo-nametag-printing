@@ -194,8 +194,18 @@ while True:
         first_name, last_name, major, year, regis_id, email, phone_number = \
             [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
 
+    # Special cases assignments
     if "freshman" in year.lower():
-        major = NameTagConfig.majors[10]
+        major = NameTagConfig.majors[NameTagConfig.major_index["GE"]]
+
+    if "construction" in major.lower() and "management" in major.lower():
+        major = NameTagConfig.majors[NameTagConfig.major_index["CEM"]]
+
+    if "computer" in major.lower() and "science" in major.lower():
+        major = NameTagConfig.majors[NameTagConfig.major_index["CS"]]
+
+    if "building" in major.lower() and "construction" in major.lower():
+        major = NameTagConfig.majors[NameTagConfig.major_index["BUC"]]
 
     # Terminal output for student info
     print('#'*10 + ' NameTag Info ' + '#'*10 +

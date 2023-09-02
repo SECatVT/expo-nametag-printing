@@ -35,11 +35,12 @@ class NameTagConfig:
         "Aerospace Engineering",
         "Biological Systems Engineering",
         "Biomedical Engineering",
+        "Building Construction",
         "Chemical Engineering",
         "Civil Engineering",
         "Computer Engineering",
         "Computer Science",
-        "Construction Engineering and Management",
+        "Construction Engineering (CEM)",
         "Electrical Engineering",
         "Engineering Science and Mechanics",
         "General Engineering",
@@ -50,6 +51,26 @@ class NameTagConfig:
         "Ocean Engineering",
         "Non-Engineering"
         ]
+    
+    major_index = {
+        "AE": 0,
+        "BSE": 1,
+        "BME": 2,
+        "BUC": 3,
+        "CHE": 4,
+        "CVE": 5,
+        "CPE": 6,
+        "CS": 7,
+        "CEM": 8,
+        "EE": 9,
+        "ESM": 10,
+        "GE": 11,
+        "ISE": 12,
+        "MSE": 13,
+        "ME": 14,
+        "OE": 15,
+        "NON": 16 
+    }
 
 class QueryConfig: 
 
