@@ -63,7 +63,7 @@ def _printer_set_up():
     try:
         dymo_printer = Dispatch("Dymo.DymoAddIn")
         print(dymo_printer.GetDymoPrinters())
-        label_path = pathlib.Path("./src/label/student_badge_v2.dymo")
+        label_path = pathlib.Path("./src/label/student_badge_v3.label")
         dymo_printer.SelectPrinter(dymo_printer.GetDymoPrinters())
         dymo_printer.Open(label_path)
         dymo_label = Dispatch("Dymo.DymoLabels")
