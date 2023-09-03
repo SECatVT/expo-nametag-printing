@@ -32,7 +32,7 @@ def people_search_query(event_id, search):
         'search': search
     }
 
-    response = requests.post(url=URL, headers=headers, 
+    response = requests.post(url=URL, headers=headers,
                              json={'query': query, 'variables': variables}, timeout=5)
 
     # Check if the request was successful
@@ -55,6 +55,26 @@ def people_filter_query(event_id, filters):
     response = requests.post(url=URL, headers=headers, 
                              json={'query': query, 'variables': variables}, timeout=5)
 
+    # Check if the request was successful
+    if not response.status_code == 200:
+        # Print the error message if the request failed
+        print('Request failed with status code:', response.status_code)
+        print('Error message:', response.text)
+
+    return response
+
+def backup_database_query(event_id, cursor):
+
+    # Define your GraphQL query
+    query = QueryConfig.mass_people_query
+    variables = {
+        'eventId': event_id,
+        'cursor': cursor
+    }
+
+    response = requests.post(url=URL, headers=headers,
+                             json={'query': query, 'variables': variables}, timeout=50)
+    
     # Check if the request was successful
     if not response.status_code == 200:
         # Print the error message if the request failed

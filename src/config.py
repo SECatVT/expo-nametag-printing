@@ -9,6 +9,18 @@ class GeneralConfig:
     GOOGLE_LOG_SHEET_NAME = "testPythonLog"
     WORKSHEET_NAME = "Log1"
 
+    GOOGLE_BACKUP_DB_SHEET_NAME = "SwapCardBackUp"
+    WORKSHEET_BACKUP_DB_NAME = "Data"
+    GOOGLE_DB_END_CURSOR = "endCursor"
+
+    GOOGLE_FIRST_NAME_COL = "C"
+    GOOGLE_LAST_NAME_COL = "D"
+    GOOGLE_MAJOR_COL = "E"
+    GOOGLE_YEAR_COL = "F"
+    GOOGLE_REGIS_ID_COL = "G"
+    GOOGLE_EMAIL_COL = "H"
+    GOOGLE_PHONE_NUMBER_COL = "I"
+
     # query structure keys
     DATA = "data"
     EVENT_PERSON = "eventPerson"
@@ -35,11 +47,12 @@ class NameTagConfig:
         "Aerospace Engineering",
         "Biological Systems Engineering",
         "Biomedical Engineering",
+        "Building Construction",
         "Chemical Engineering",
         "Civil Engineering",
         "Computer Engineering",
         "Computer Science",
-        "Construction Engineering and Management",
+        "Construction Engineering (CEM)",
         "Electrical Engineering",
         "Engineering Science and Mechanics",
         "General Engineering",
@@ -50,6 +63,26 @@ class NameTagConfig:
         "Ocean Engineering",
         "Non-Engineering"
         ]
+    
+    major_index = {
+        "AE": 0,
+        "BSE": 1,
+        "BME": 2,
+        "BUC": 3,
+        "CHE": 4,
+        "CVE": 5,
+        "CPE": 6,
+        "CS": 7,
+        "CEM": 8,
+        "EE": 9,
+        "ESM": 10,
+        "GE": 11,
+        "ISE": 12,
+        "MSE": 13,
+        "ME": 14,
+        "OE": 15,
+        "NON": 16 
+    }
 
 class QueryConfig: 
 
@@ -147,6 +180,14 @@ class QueryConfig:
                                 }
                             }
                         }
+                        ... on NumberField {
+                            studentID: value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
                     }
                     badges {
                         ... on BadgeBarcode {
@@ -160,7 +201,6 @@ class QueryConfig:
                 updatedAt
                 type
                 engagementScore
-                clientIds
                 }
             }
         }
@@ -216,6 +256,14 @@ class QueryConfig:
                                 }
                             }
                         }
+                        ... on NumberField {
+                            studentID: value
+                            definition {
+                                translations {
+                                    name
+                                }
+                            }
+                        }
                     }
                     badges {
                         ... on BadgeBarcode {
@@ -229,7 +277,83 @@ class QueryConfig:
                 updatedAt
                 type
                 engagementScore
-                clientIds
+                }
+            }
+        }
+    '''
+
+    mass_people_query= '''
+        query eventPerson($eventId: ID!, $cursor: CursorPaginationInput) {
+            eventPerson(eventId: $eventId, cursor: $cursor) {
+                pageInfo {
+                    hasNextPage
+                    endCursor
+                    totalItems
+                    startCursor
+                    lastPage
+                    hasPreviousPage
+                    currentPage
+                }
+                totalCount
+                nodes {
+                    firstName
+                    lastName
+                    email
+                    phoneNumbers {
+                        number
+                    }
+                    withEvent(eventId: $eventId) {
+                        fields {
+                            ... on MultipleSelectField {
+                                translations {
+                                    value
+                                }
+                                definition {
+                                    translations {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on SelectField {
+                                translations {
+                                    value
+                                }
+                                definition {
+                                    translations {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on TextField {
+                                value
+                                definition {
+                                    translations {
+                                        name
+                                    }
+                                }
+                            }
+                            ... on NumberField {
+                                studentID: value
+                                definition {
+                                    translations {
+                                        name
+                                    }
+                                }
+                            }
+                        }
+                        badges {
+                            ... on BadgeBarcode {
+                                barcode
+                            }
+                        }
+                    }
+                    groups {
+                        id
+                        name
+                    }
+                    source
+                    updatedAt
+                    createdAt
                 }
             }
         }
