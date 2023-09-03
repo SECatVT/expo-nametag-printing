@@ -99,13 +99,12 @@ backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id, backup_e
 
 layout = [
     [sg.Checkbox("Search in Backup Database", key="BUDBConfirm")],
-    [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
-    [sg.Text("Option 2 - Input VT PID")], input2,
+    [sg.Text("Option 1 "), *input1], [sg.Text("Option 2 "), *input2],
     [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="MIConfirm")], *backup,
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
-                   layout, size=(2400, 1400))
+                   layout, size=(800, 600))
 
 # confirm inserting row number
 row_insert = _check_row_insert(end_cell)
