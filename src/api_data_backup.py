@@ -1,6 +1,6 @@
+from time import sleep
 import gspread
 import query
-from time import sleep
 from config import GeneralConfig, NameTagConfig, QueryConfig
 
 # Globals

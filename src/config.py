@@ -13,6 +13,14 @@ class GeneralConfig:
     WORKSHEET_BACKUP_DB_NAME = "Data"
     GOOGLE_DB_END_CURSOR = "endCursor"
 
+    GOOGLE_FIRST_NAME_COL = "C"
+    GOOGLE_LAST_NAME_COL = "D"
+    GOOGLE_MAJOR_COL = "E"
+    GOOGLE_YEAR_COL = "F"
+    GOOGLE_REGIS_ID_COL = "G"
+    GOOGLE_EMAIL_COL = "H"
+    GOOGLE_PHONE_NUMBER_COL = "I"
+
     # query structure keys
     DATA = "data"
     EVENT_PERSON = "eventPerson"
