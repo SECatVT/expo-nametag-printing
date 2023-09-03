@@ -11,6 +11,7 @@ class GeneralConfig:
 
     GOOGLE_BACKUP_DB_SHEET_NAME = "SwapCardBackUp"
     WORKSHEET_BACKUP_DB_NAME = "Data"
+    GOOGLE_DB_END_CURSOR = "endCursor"
 
     # query structure keys
     DATA = "data"

@@ -29,6 +29,8 @@ DEFAULT_FONT = ("Calibri", 22)
 INPUT_FONT = ("Courier", 20)
 TEXT_SIZE = (15, 1)
 
+BACKUP_FLAG = False
+
 # verify event
 event = query.event_query(EVENT_ID).json()
 print(event['data']['event']['title'])
@@ -51,11 +53,9 @@ def _cell_range(row):
     return "A" + str(row) + ":I" + str(row)
 
 def _check_row_insert(check_cell):
-    backup_row = 1
     if check_cell is None:
-        while not work_sheet.cell(backup_row,1).value is None:
-            backup_row += 1
-        return backup_row
+        all_values = work_sheet.get_all_values()
+        return len(all_values)+1
     else:
         return check_cell.row
 
@@ -126,14 +126,17 @@ while True:
     if not inputs["MIConfirm"]:
         # Option 1 - Search by registration ID
         if not inputs['BRID'] == '':
-            people_filter = {'qrCodes': inputs['BRID']}
-            person = query.people_filter_query(EVENT_ID, people_filter)
+            if not BACKUP_FLAG: 
+                people_filter = {'qrCodes': inputs['BRID']}
+                person = query.people_filter_query(EVENT_ID, people_filter)
+                print(person.json())
 
-            print(person.json())
-
-            if person.json()[DATA][EVENT_PERSON][NODE] == []:
-                print("Warning - Invaild registration ID. EventPerson can not be resolved.")
-                continue
+                if person.json()[DATA][EVENT_PERSON][NODE] == []:
+                    print("Warning - Invaild registration ID. EventPerson can not be resolved.")
+                    continue
+            
+            else:
+                pass
 
         # Option 2 - Search by PID or VT email
         elif not inputs['PID'] == '':
