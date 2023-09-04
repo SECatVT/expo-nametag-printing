@@ -1,5 +1,5 @@
 class GeneralConfig:
-    
+
     CURRENT_YEAR = 2023
 
     # google sheet log configs
