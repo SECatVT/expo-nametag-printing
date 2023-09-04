@@ -82,6 +82,8 @@ def _is_hokiep_scan(input):
     if len(hokiep_scan) == 11 and hokiep_scan[0] == 'a' and hokiep_scan[-1] == 'a':
         hokiep_id = hokiep_scan[1:-1]
         return True, hokiep_id
+    if len(hokiep_id) == 9:
+        return True, hokiep_id
     return False, hokiep_id
 
 # printer dispatch
