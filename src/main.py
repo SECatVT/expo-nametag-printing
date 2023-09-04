@@ -267,7 +267,7 @@ while True:
             # Print job
             label.SetField("fn", first_name)
             label.SetField("ln", last_name)
-            label.SetField("ln_1", '')
+            # label.SetField("ln_1", '')
             label.SetField("y", year)
             label.SetField("m", major)
             label.SetField("BARCODE", regis_id)
