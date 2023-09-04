@@ -104,8 +104,9 @@ layout = [
     [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="MIConfirm")], *backup,
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
+print(f"Window Size: {sg.Window.get_screen_size()}")
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
-                   layout, size=(2400, 1400))
+                   layout, size=sg.Window.get_screen_size())
 
 # confirm inserting row number
 row_insert = _check_row_insert(end_cell)
