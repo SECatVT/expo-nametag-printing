@@ -76,6 +76,14 @@ def _printer_set_up():
 
     return dymo_printer, dymo_label
 
+def _is_hokiep_scan(input):
+    hokiep_scan = input.lower()
+    hokiep_id = input
+    if len(hokiep_scan) == 11 and hokiep_scan[0] == 'a' and hokiep_scan[-1] == 'a':
+        hokiep_id = hokiep_scan[1:-1]
+        return True, hokiep_id
+    return False, hokiep_id
+
 # printer dispatch
 printer, label = _printer_set_up()
 
@@ -125,8 +133,9 @@ while True:
     first_name, last_name, major, year, regis_id = '', '', '', '', ''
     email, phone_number = '', ''
 
+    is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
     # Parse information from SwapCard API queries
-    if not inputs["MIConfirm"] and not inputs["BUDBConfirm"] and len(inputs['BRID']) != 9:
+    if not inputs["MIConfirm"] and not inputs["BUDBConfirm"] and not is_student_id:
         # Option 1 - Search by registration ID
         if not inputs['BRID'] == '':
             people_filter = {'qrCodes': inputs['BRID']}
@@ -188,10 +197,10 @@ while True:
         regis_id = badges[0]['barcode']
 
     # Parse from querying the backup database
-    elif inputs["BUDBConfirm"] or len(inputs['BRID']) == 9:
+    elif inputs["BUDBConfirm"] or is_student_id:
         # Option 1 - Search by registration ID or Student ID
         if not inputs['BRID'] == '':
-            people_record = backup_db_sheet.find(inputs['BRID'])
+            people_record = backup_db_sheet.find(student_id)
             if people_record is not None:
                 people_row = people_record.row
             else:

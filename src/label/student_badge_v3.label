@@ -72,12 +72,12 @@
 				</Element>
 			</StyledText>
 		</TextObject>
-		<Bounds X="450" Y="1721.06666666667" Width="4103.66666666667" Height="613.333333333333" />
+		<Bounds X="450" Y="1556.06666666667" Width="4103.66666666667" Height="613.333333333333" />
 	</ObjectInfo>
 	<ObjectInfo>
 		<TextObject>
 			<Name>y</Name>
-			<ForeColor Alpha="255" Red="100" Green="100" Blue="100" />
+			<ForeColor Alpha="255" Red="0" Green="0" Blue="0" />
 			<BackColor Alpha="0" Red="255" Green="255" Blue="255" />
 			<LinkedObjectName />
 			<Rotation>Rotation0</Rotation>
@@ -94,8 +94,8 @@
 				<Element>
 					<String xml:space="preserve">YEAR</String>
 					<Attributes>
-						<Font Family="Segoe UI" Size="16" Bold="False" Italic="False" Underline="False" Strikeout="False" />
-						<ForeColor Alpha="255" Red="100" Green="100" Blue="100" HueScale="100" />
+						<Font Family="Segoe UI" Size="18" Bold="False" Italic="False" Underline="False" Strikeout="False" />
+						<ForeColor Alpha="255" Red="0" Green="0" Blue="0" HueScale="100" />
 					</Attributes>
 				</Element>
 			</StyledText>
@@ -184,7 +184,7 @@
 			<LineAlignment>Center</LineAlignment>
 			<FillColor Alpha="0" Red="255" Green="255" Blue="255" />
 		</ShapeObject>
-		<Bounds X="4657.66666666667" Y="723.186670939126" Width="1068" Height="984" />
+		<Bounds X="4797.66666666667" Y="793.186670939126" Width="792" Height="792" />
 	</ObjectInfo>
 	<ObjectInfo>
 		<BarcodeObject>
@@ -208,6 +208,6 @@
 			<HorizontalAlignment>Center</HorizontalAlignment>
 			<QuietZonesPadding Left="0" Top="0" Right="0" Bottom="0" />
 		</BarcodeObject>
-		<Bounds X="4743.33333333333" Y="1743.33333333333" Width="933.333333333331" Height="873.333333333337" />
+		<Bounds X="4733.33333333333" Y="1733.33333333333" Width="933.333333333331" Height="873.333333333337" />
 	</ObjectInfo>
 </DieCutLabel>
