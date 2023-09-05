@@ -3,6 +3,10 @@
 ## How To Use It
 I am sure you will figure it out
 
+## Dependencies
+* [DYMO Label](https://s3.amazonaws.com/download.dymo.com/dymo/Software/Win/DLS8Setup8.7.4.exe)
+* [Dymo SDK](https://download.dymo.com/dymo/Software/SDK/DYMO_Label_v.8_SDK_Installer.exe)
+
 ## Feature Demoed
 - [x] Scan event registration ID and submit query an event participant on SwapCard API
 
