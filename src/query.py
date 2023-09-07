@@ -13,7 +13,7 @@ def event_query(event_id):
     }
 
     response = requests.post(url=URL, headers=headers,
-                             json={'query': query, 'variables': variables}, timeout=5)
+                             json={'query': query, 'variables': variables}, timeout=15)
 
     # Check if the request was successful
     if not response.status_code == 200:
@@ -33,7 +33,7 @@ def people_search_query(event_id, search):
     }
 
     response = requests.post(url=URL, headers=headers,
-                             json={'query': query, 'variables': variables}, timeout=5)
+                             json={'query': query, 'variables': variables}, timeout=15)
 
     # Check if the request was successful
     if not response.status_code == 200:
@@ -53,7 +53,7 @@ def people_filter_query(event_id, filters):
     }
 
     response = requests.post(url=URL, headers=headers, 
-                             json={'query': query, 'variables': variables}, timeout=5)
+                             json={'query': query, 'variables': variables}, timeout=15)
 
     # Check if the request was successful
     if not response.status_code == 200:
