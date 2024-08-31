@@ -1,6 +1,6 @@
 class GeneralConfig:
 
-    CURRENT_YEAR = 2023
+    CURRENT_YEAR = 2024
 
     # google sheet log configs
     GOOGLE_LOG = True
