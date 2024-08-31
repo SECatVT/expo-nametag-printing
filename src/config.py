@@ -86,10 +86,10 @@ class NameTagConfig:
 
 class QueryConfig: 
 
-    event_id = 'RXZlbnRfMTEyNDY4Ng=='
+    event_id = 'RXZlbnRfMTkwMjgwOQ=='
     url = 'https://developer.swapcard.com/event-admin/graphql'
     headers = {
-        'Authorization': 'NjRhOGNiNjc4MTMxY2RhZTMwYmIyN2E0OmYxOGZiMmY0YWZlMjQxMWViY2M1NGRiOTQ3ZTY3YzBh',
+            'Authorization': 'NjZkMzhmYTIxMmEyNDdmOTNhZGEwODI1OjVjOWQ3MjM3N2Q3MDRhYmQ4Mjk2ZmQ0MmVjM2I4NTMz',
         'Accept': 'application/json'
     }
 
