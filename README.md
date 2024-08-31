@@ -5,7 +5,7 @@
 1.  Download Visual Studio Code
 2.  Download Python
 3.  Download Git
-4.  Install the SDK
+4.  Install [the SDK](https://www.dymo.com/support?cfid=online-support-sdk)
 
 ## Feature Demoed
 - [x] Scan event registration ID and submit query an event participant on SwapCard API
