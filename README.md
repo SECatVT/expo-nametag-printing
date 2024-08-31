@@ -1,7 +1,11 @@
-# 2023 Engineering Expo Student Nametag Print Setup
+# Engineering Expo Student Nametag Print Setup
 
 ## How To Use It
-I am sure you will figure it out
+## Pre-Requities
+1.  Download Visual Studio Code
+2.  Download Python
+3.  Download Git
+4.  Install the SDK
 
 ## Feature Demoed
 - [x] Scan event registration ID and submit query an event participant on SwapCard API
