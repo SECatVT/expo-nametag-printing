@@ -32,7 +32,7 @@ Python is the programming language in which the nametag printing script is writt
   1. Visit the [Python download page](https://www.python.org/downloads/).
   2. Select the latest Python 3.x.x version for your operating system.
   3. During installation, make sure to check the box that says "Add Python to PATH."
-  4. Verify the installation by opening a terminal or command prompt and typing `python --version`
+  4. Verify the installation by opening a terminal or command prompt and typing `py --version`
   5. Additionally, verify that `pip`, Python’s package installer, is working by running: `pip --version`
 
 ### 4. Install the DYMO SDK
@@ -55,15 +55,14 @@ The DYMO Label Software allows you to design and print labels. It also contains 
 To ensure your Python environment is set up with all necessary dependencies, install the required Python packages.
 
 **Installation Steps:**
-  1. Create a `requirements.txt` file or use the one provided with the project.
-  2. Open a terminal or command prompt in the directory containing the `requirements.txt` file.
-  3. Run the following command: `pip install -r requirements.txt`
+  1. Open a terminal or command prompt in the directory containing the `requirements.txt` file.
+  2. Run the following command: `pip install -r requirements.txt`
 
 ## Verify Setup Using a Python Script
 
 You can use the following Python script to automate the verification of your setup by opening a terminal or command prompt in the root project directory and executing:
    ```bash
-   python verify_setup.py
+   py verify_setup.py
    ```
 
 Alternatively, to just verify the DYMO configuration, complete the following steps: 
@@ -72,7 +71,7 @@ Alternatively, to just verify the DYMO configuration, complete the following ste
   3. Run the following Python commands:
 
   ```python
-  python
+  py
   >>> import win32com.client
   >>> dymo = win32com.client.Dispatch("Dymo.DymoAddIn")
   >>> print(dymo)
