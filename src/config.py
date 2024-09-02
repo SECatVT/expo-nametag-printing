@@ -84,12 +84,16 @@ class NameTagConfig:
         "NON": 16 
     }
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 class QueryConfig: 
 
-    event_id = 'RXZlbnRfMTkwMjgwOQ=='
+    event_id =  os.getenv('SWAPCARD_EVENT_ID')
     url = 'https://developer.swapcard.com/event-admin/graphql'
     headers = {
-            'Authorization': 'NjZkMzhmYTIxMmEyNDdmOTNhZGEwODI1OjVjOWQ3MjM3N2Q3MDRhYmQ4Mjk2ZmQ0MmVjM2I4NTMz',
+        'Authorization': os.getenv('SWAPCARD_API_KEY'),
         'Accept': 'application/json'
     }
 

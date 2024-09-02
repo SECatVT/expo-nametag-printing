@@ -2,3 +2,4 @@ graphql-core
 pywin32
 pysimplegui
 requests
+python-dotenv
