@@ -1,5 +1,4 @@
 graphql-core
-pywin32==304
-pysimplegui==4.60.3
+pywin32
+pysimplegui
 requests
-gspread
