@@ -152,14 +152,17 @@ while True:
 
         # Fetch major & year from fields - only the first major is recorded
         fields = eventPerson['withEvent']['fields']
-        first_major_flag = True
+        # first_major_flag = True
         for field in fields:
-            if first_major_flag and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Major':
+            # if first_major_flag and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Major':
+            if (DEFINITION in field and field[DEFINITION]['id'] == 'RmllbGREZWZpbml0aW9uXzcxNzk1Mw=='):
                 # MultipleSelectField query structure
                 major = field[TRANSLATION][0]['value']
                 first_major_flag = False
 
-            if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
+            # if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
+            if (DEFINITION in field and field[DEFINITION]['id'] == 'RmllbGREZWZpbml0aW9uXzcxODcxMg=='):
+
                 # SelectField query structure
                 year = field[TRANSLATION][0]['value']
 

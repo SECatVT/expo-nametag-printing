@@ -218,6 +218,7 @@ class QueryConfig:
                                 value
                             }
                             definition {
+                                id
                                 translations {
                                     name
                                 }
@@ -228,6 +229,7 @@ class QueryConfig:
                                 value
                             }
                             definition {
+                                id
                                 translations {
                                     name
                                 }
@@ -236,6 +238,7 @@ class QueryConfig:
                         ... on TextField {
                             value
                             definition {
+                                id
                                 translations {
                                     name
                                 }
@@ -244,6 +247,7 @@ class QueryConfig:
                         ... on NumberField {
                             studentID: value
                             definition {
+                                id
                                 translations {
                                     name
                                 }
