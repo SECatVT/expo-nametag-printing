@@ -3,7 +3,7 @@ import pathlib
 import time
 import warnings
 
-import gspread
+#import gspread
 import PySimpleGUI as sg
 from win32com.client import Dispatch
 
@@ -11,7 +11,7 @@ import query
 from config import GeneralConfig, NameTagConfig, QueryConfig
 
 # There is a messy warning from google sheet api for unknown reason
-warnings.filterwarnings("ignore", message=".*Worksheet.update")
+#warnings.filterwarnings("ignore", message=".*Worksheet.update")
 
 # Globals
 DATA = GeneralConfig.DATA
@@ -31,38 +31,40 @@ TEXT_SIZE = (15, 1)
 
 # verify event
 event = query.event_query(EVENT_ID).json()
-print(event['data']['event']['title'])
+print(event)
 
 # set up simple GUI
 sg.theme("SystemDefaultForReal")
 sg.set_options(font=DEFAULT_FONT)
 
 # set up Google Sheet Log
-service_account = gspread.service_account(filename=GeneralConfig.GOOGLE_LOG_KEYFILE_NAME)
-log_sheet = service_account.open(GeneralConfig.GOOGLE_LOG_SHEET_NAME)
-work_sheet = log_sheet.worksheet(GeneralConfig.WORKSHEET_NAME)
-end_cell = work_sheet.find(GeneralConfig.GOOGLE_LOG_END_TOKEN)
+#service_account = gspread.service_account(filename=GeneralConfig.GOOGLE_LOG_KEYFILE_NAME)
+#log_sheet = service_account.open(GeneralConfig.GOOGLE_LOG_SHEET_NAME)
+#work_sheet = log_sheet.worksheet(GeneralConfig.WORKSHEET_NAME)
+#end_cell = work_sheet.find(GeneralConfig.GOOGLE_LOG_END_TOKEN)
 
-backup_db = service_account.open(GeneralConfig.GOOGLE_BACKUP_DB_SHEET_NAME)
-backup_db_sheet = backup_db.worksheet(GeneralConfig.WORKSHEET_BACKUP_DB_NAME)
+#backup_db = service_account.open(GeneralConfig.GOOGLE_BACKUP_DB_SHEET_NAME)
+#backup_db_sheet = backup_db.worksheet(GeneralConfig.WORKSHEET_BACKUP_DB_NAME)
 
 # private utility functions
 def _text_creater(text_content):
     return sg.Text(text=text_content, size=TEXT_SIZE, font=INPUT_FONT)
 
-def _cell_range(row):
-    return "A" + str(row) + ":I" + str(row)
+#def _cell_range(row):
+#    return "A" + str(row) + ":I" + str(row)
 
-def _check_row_insert(check_cell):
-    if check_cell is None:
-        all_values = work_sheet.get_all_values()
-        return len(all_values)+1
-    else:
-        return check_cell.row
+#def _check_row_insert(check_cell):
+#    if check_cell is None:
+#        all_values = work_sheet.get_all_values()
+#        return len(all_values)+1
+#    else:
+#        return check_cell.row
 
 def _printer_set_up():
     try:
+        print("Before Dispatch")
         dymo_printer = Dispatch("Dymo.DymoAddIn")
+        print ("After Dispatch")
         print(dymo_printer.GetDymoPrinters())
         label_path = pathlib.Path("./src/label/student_badge_v3.label")
         dymo_printer.SelectPrinter(dymo_printer.GetDymoPrinters())
@@ -117,7 +119,7 @@ window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student 
                    layout, size=sg.Window.get_screen_size())
 
 # confirm inserting row number
-row_insert = _check_row_insert(end_cell)
+#row_insert = _check_row_insert(end_cell)
 # record start time as timestamp for a previous event
 timePrev = time.time()
 
@@ -200,39 +202,25 @@ while True:
     elif inputs["BUDBConfirm"] or is_student_id:
         # Option 1 - Search by registration ID or Student ID
         if not inputs['BRID'] == '':
-            people_record = backup_db_sheet.find(student_id)
+            #people_record = {THIS IS WHERE I QUERY BY HOKIE P}
             if people_record is not None:
                 people_row = people_record.row
             else:
                 print("Warning - Invaild registration ID. EventPerson can not be resolved in Backup Database.")
                 continue
 
-        elif not inputs['PID'] == '':
-            pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
-            people_record = backup_db_sheet.find(pid)
-            if people_record is not None:
-                people_row = people_record.row
-            else:
-                print("Warning - Invaild PID/VT email. EventPerson can not be resolved in Backup Database.")
-                continue
+        #elif not inputs['PID'] == '':
+        #    pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
+        #    #people_record = backup_db_sheet.find(pid)
+        #    if people_record is not None:
+        #        people_row = people_record.row
+        #    else:
+        #        print("Warning - Invaild PID/VT email. EventPerson can not be resolved in Backup Database.")
+        #        continue
 
         else:
             print("Warning - No Input Detected (Backup Database Query)")
             continue
-
-        first_name = backup_db_sheet.get(GeneralConfig.GOOGLE_FIRST_NAME_COL + str(people_row))[0][0]
-        last_name = backup_db_sheet.get(GeneralConfig.GOOGLE_LAST_NAME_COL + str(people_row))[0][0]
-        
-        major_cell = backup_db_sheet.get(GeneralConfig.GOOGLE_MAJOR_COL + str(people_row))
-        major = major_cell[0][0] if major_cell else ''
-        year_cell = backup_db_sheet.get(GeneralConfig.GOOGLE_YEAR_COL + str(people_row))
-        year = year_cell[0][0] if year_cell else ''
-        regis_id_cell = backup_db_sheet.get(GeneralConfig.GOOGLE_REGIS_ID_COL + str(people_row))
-        regis_id = regis_id_cell[0][0] if regis_id_cell else ''
-        email_cell = backup_db_sheet.get(GeneralConfig.GOOGLE_EMAIL_COL + str(people_row))
-        email = email_cell[0][0] if email_cell else ''
-        phone_num_cell = backup_db_sheet.get(GeneralConfig.GOOGLE_PHONE_NUMBER_COL + str(people_row))
-        phone_number = phone_num_cell[0][0] if phone_num_cell else ''
 
     # Parse directly from manual inputs
     else:
@@ -266,7 +254,7 @@ while True:
     now_date = now_datetime.strftime("%m/%d/%Y")
     now_time = now_datetime.strftime("%H:%M:%S")
     organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
-    work_sheet.update(_cell_range(row_insert), organized_data)
+    #work_sheet.update(_cell_range(row_insert), organized_data)
 
     # Terminal output for Google Sheet log Confirmation
     print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
@@ -292,9 +280,9 @@ while True:
             print("\nPrinting Not Resolved - ", err, "\n")
 
     # Index increment
-    row_insert += 1
+    #row_insert += 1
 
-work_sheet.update('A' + str(row_insert), GeneralConfig.GOOGLE_LOG_END_TOKEN)
+#work_sheet.update('A' + str(row_insert), GeneralConfig.GOOGLE_LOG_END_TOKEN)
 if printer is not None:
     printer.EndPrintJob()
 window.close()

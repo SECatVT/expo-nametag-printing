@@ -3,23 +3,23 @@ class GeneralConfig:
     CURRENT_YEAR = 2024
 
     # google sheet log configs
-    GOOGLE_LOG = True
-    GOOGLE_LOG_END_TOKEN = "---END---"
-    GOOGLE_LOG_KEYFILE_NAME = "google_log_service_account.json"
-    GOOGLE_LOG_SHEET_NAME = "testPythonLog"
-    WORKSHEET_NAME = "Log1"
+    #GOOGLE_LOG = True
+    #GOOGLE_LOG_END_TOKEN = "---END---"
+    #GOOGLE_LOG_KEYFILE_NAME = "google_log_service_account.json"
+    #GOOGLE_LOG_SHEET_NAME = "testPythonLog"
+    #WORKSHEET_NAME = "Log1"
 
-    GOOGLE_BACKUP_DB_SHEET_NAME = "SwapCardBackUp"
-    WORKSHEET_BACKUP_DB_NAME = "Data"
-    GOOGLE_DB_END_CURSOR = "endCursor"
+    #GOOGLE_BACKUP_DB_SHEET_NAME = "SwapCardBackUp"
+    #WORKSHEET_BACKUP_DB_NAME = "Data"
+    #GOOGLE_DB_END_CURSOR = "endCursor"
 
-    GOOGLE_FIRST_NAME_COL = "C"
-    GOOGLE_LAST_NAME_COL = "D"
-    GOOGLE_MAJOR_COL = "E"
-    GOOGLE_YEAR_COL = "F"
-    GOOGLE_REGIS_ID_COL = "G"
-    GOOGLE_EMAIL_COL = "H"
-    GOOGLE_PHONE_NUMBER_COL = "I"
+    #GOOGLE_FIRST_NAME_COL = "C"
+    #GOOGLE_LAST_NAME_COL = "D"
+    #GOOGLE_MAJOR_COL = "E"
+    #GOOGLE_YEAR_COL = "F"
+    #GOOGLE_REGIS_ID_COL = "G"
+    #GOOGLE_EMAIL_COL = "H"
+    #GOOGLE_PHONE_NUMBER_COL = "I"
 
     # query structure keys
     DATA = "data"
@@ -84,12 +84,16 @@ class NameTagConfig:
         "NON": 16 
     }
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 class QueryConfig: 
 
-    event_id = 'RXZlbnRfMTEyNDY4Ng=='
+    event_id =  os.getenv('SWAPCARD_EVENT_ID')
     url = 'https://developer.swapcard.com/event-admin/graphql'
     headers = {
-        'Authorization': 'NjRhOGNiNjc4MTMxY2RhZTMwYmIyN2E0OmYxOGZiMmY0YWZlMjQxMWViY2M1NGRiOTQ3ZTY3YzBh',
+        'Authorization': os.getenv('SWAPCARD_API_KEY'),
         'Accept': 'application/json'
     }
 
