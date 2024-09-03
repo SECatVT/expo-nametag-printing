@@ -75,7 +75,7 @@ def _is_hokiep_scan(input):
 printer, label = _printer_set_up()
 
 # design the GUI
-input1 = [_text_creater("Badge Register ID"), sg.InputText(do_not_clear=False, key="BRID")]
+input1 = [_text_creater("Badge Code"), sg.InputText(do_not_clear=False, key="BRID")]
 input2 = [_text_creater("VT PID"), sg.InputText(do_not_clear=False, key="PID")]
 
 backup_fn = [_text_creater("First Name"), sg.InputText(do_not_clear=False, key="FN")]
@@ -93,8 +93,7 @@ backup_phone = [_text_creater("Phone Number"),
 backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id, backup_email, backup_phone]
 
 layout = [
-    [sg.Checkbox("Search in Backup Database", key="BUDBConfirm")],
-    [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
+    [sg.Text("Option 1 - Scan Swapcard Badge Code or the Code from their Confirmation Email")], input1,
     [sg.Text("Option 2 - Input VT PID")], input2,
     [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="manual_input")], *backup,
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
@@ -123,7 +122,7 @@ while True:
     is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
     
     # Parse information from SwapCard API queries
-    if not inputs["manual_input"] and not inputs["BUDBConfirm"] and not is_student_id:
+    if not inputs["manual_input"] and not is_student_id:
         # Option 1 - Search by registration ID
         if not inputs['BRID'] == '':
             people_filter = {'qrCodes': inputs['BRID']}
@@ -188,7 +187,7 @@ while True:
         regis_id = badges[0]['barcode']
 
     # Parse from querying the backup database
-    elif inputs["BUDBConfirm"] or is_student_id:
+    elif is_student_id:
         # Option 1 - Search by registration ID or Student ID
         if not inputs['BRID'] == '':
             #people_record = {THIS IS WHERE I QUERY BY HOKIE P}
