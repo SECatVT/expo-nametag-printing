@@ -10,9 +10,6 @@ from win32com.client import Dispatch
 import query
 from config import GeneralConfig, NameTagConfig, QueryConfig
 
-# There is a messy warning from google sheet api for unknown reason
-#warnings.filterwarnings("ignore", message=".*Worksheet.update")
-
 # Globals
 DATA = GeneralConfig.DATA
 EVENT_PERSON = GeneralConfig.EVENT_PERSON
@@ -37,28 +34,9 @@ print(event)
 sg.theme("SystemDefaultForReal")
 sg.set_options(font=DEFAULT_FONT)
 
-# set up Google Sheet Log
-#service_account = gspread.service_account(filename=GeneralConfig.GOOGLE_LOG_KEYFILE_NAME)
-#log_sheet = service_account.open(GeneralConfig.GOOGLE_LOG_SHEET_NAME)
-#work_sheet = log_sheet.worksheet(GeneralConfig.WORKSHEET_NAME)
-#end_cell = work_sheet.find(GeneralConfig.GOOGLE_LOG_END_TOKEN)
-
-#backup_db = service_account.open(GeneralConfig.GOOGLE_BACKUP_DB_SHEET_NAME)
-#backup_db_sheet = backup_db.worksheet(GeneralConfig.WORKSHEET_BACKUP_DB_NAME)
-
 # private utility functions
 def _text_creater(text_content):
     return sg.Text(text=text_content, size=TEXT_SIZE, font=INPUT_FONT)
-
-#def _cell_range(row):
-#    return "A" + str(row) + ":I" + str(row)
-
-#def _check_row_insert(check_cell):
-#    if check_cell is None:
-#        all_values = work_sheet.get_all_values()
-#        return len(all_values)+1
-#    else:
-#        return check_cell.row
 
 def _printer_set_up():
     try:
@@ -111,24 +89,24 @@ layout = [
     [sg.Checkbox("Search in Backup Database", key="BUDBConfirm")],
     [sg.Text("Option 1 - Scan QR code from SwapCard")], input1,
     [sg.Text("Option 2 - Input VT PID")], input2,
-    [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="MIConfirm")], *backup,
+    [sg.Checkbox("Manual Input Backup (enable by checkbox)", key="manual_input")], *backup,
     [sg.Submit(), sg.Text("Please only exit this program by closing the window.",text_color="red")]
 ]
 print(f"Window Size: {sg.Window.get_screen_size()}")
 window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student Nametag Printing",
                    layout, size=sg.Window.get_screen_size())
 
-# confirm inserting row number
-#row_insert = _check_row_insert(end_cell)
 # record start time as timestamp for a previous event
 timePrev = time.time()
 
 while True:
     event, inputs = window.read()
-    print(event, inputs)
+
+    # Beacuse the scanner scans so fast, we need to add a delay so that the scanner doesnt print multiple of the same nametag.
     if time.time() - timePrev < 3:
         continue
     timePrev = time.time()
+    
     if event in (sg.WIN_CLOSED, 'Exit'):
         break
 
@@ -136,8 +114,9 @@ while True:
     email, phone_number = '', ''
 
     is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
+    
     # Parse information from SwapCard API queries
-    if not inputs["MIConfirm"] and not inputs["BUDBConfirm"] and not is_student_id:
+    if not inputs["manual_input"] and not inputs["BUDBConfirm"] and not is_student_id:
         # Option 1 - Search by registration ID
         if not inputs['BRID'] == '':
             people_filter = {'qrCodes': inputs['BRID']}
@@ -218,9 +197,9 @@ while True:
         #        print("Warning - Invaild PID/VT email. EventPerson can not be resolved in Backup Database.")
         #        continue
 
-        else:
-            print("Warning - No Input Detected (Backup Database Query)")
-            continue
+        # else:
+        #     print("Warning - No Input Detected (Backup Database Query)")
+        #     continue
 
     # Parse directly from manual inputs
     else:
