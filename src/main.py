@@ -10,6 +10,11 @@ from win32com.client import Dispatch
 import query
 from config import GeneralConfig, NameTagConfig, QueryConfig
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 # Globals
 DATA = GeneralConfig.DATA
 EVENT_PERSON = GeneralConfig.EVENT_PERSON
@@ -22,6 +27,8 @@ DEFINITION = GeneralConfig.DEFINITION
 TRANSLATION = GeneralConfig.TRANSLATION
 
 EVENT_ID = QueryConfig.event_id
+MAJOR_ID = os.getenv('SWAPCARD_MAJOR_ID')
+YEAR_ID = os.getenv('SWAPCARD_YEAR_ID')
 DEFAULT_FONT = ("Calibri", 22)
 INPUT_FONT = ("Courier", 20)
 TEXT_SIZE = (15, 1)
@@ -155,13 +162,13 @@ while True:
         # first_major_flag = True
         for field in fields:
             # if first_major_flag and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Major':
-            if (DEFINITION in field and field[DEFINITION]['id'] == 'RmllbGREZWZpbml0aW9uXzcxNzk1Mw=='):
+            if (DEFINITION in field and field[DEFINITION]['id'] ==  MAJOR_ID):
                 # MultipleSelectField query structure
                 major = field[TRANSLATION][0]['value']
                 first_major_flag = False
 
             # if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
-            if (DEFINITION in field and field[DEFINITION]['id'] == 'RmllbGREZWZpbml0aW9uXzcxODcxMg=='):
+            if (DEFINITION in field and field[DEFINITION]['id'] == YEAR_ID):
 
                 # SelectField query structure
                 year = field[TRANSLATION][0]['value']
