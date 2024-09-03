@@ -103,172 +103,171 @@ window = sg.Window(str(GeneralConfig.CURRENT_YEAR) + " Engineering Expo Student 
                    layout, size=sg.Window.get_screen_size())
 
 # record start time as timestamp for a previous event
-timePrev = time.time()
+timePrev = 0
 
 while True:
     event, inputs = window.read()
 
     # Beacuse the scanner scans so fast, we need to add a delay so that the scanner doesnt print multiple of the same nametag.
-    if time.time() - timePrev < 3:
-        continue
-    timePrev = time.time()
-    
-    if event in (sg.WIN_CLOSED, 'Exit'):
-        break
+    if time.time() - timePrev >= 3:
+        timePrev = time.time()
+        
+        if event in (sg.WIN_CLOSED, 'Exit'):
+            break
 
-    first_name, last_name, major, year, regis_id = '', '', '', '', ''
-    email, phone_number = '', ''
+        first_name, last_name, major, year, regis_id = '', '', '', '', ''
+        email, phone_number = '', ''
 
-    is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
-    
-    # Parse information from SwapCard API queries
-    if not inputs["manual_input"] and not is_student_id:
-        # Option 1 - Search by registration ID
-        if not inputs['BRID'] == '':
-            people_filter = {'qrCodes': inputs['BRID']}
-            person = query.people_filter_query(EVENT_ID, people_filter)
-            print(person.json())
+        is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
+        
+        # Parse information from SwapCard API queries
+        if not inputs["manual_input"] and not is_student_id:
+            # Option 1 - Search by registration ID
+            if not inputs['BRID'] == '':
+                people_filter = {'qrCodes': inputs['BRID']}
+                person = query.people_filter_query(EVENT_ID, people_filter)
+                print(person.json())
 
-            if person.json()[DATA][EVENT_PERSON][NODE] == []:
-                print("Warning - Invaild registration ID. EventPerson can not be resolved.")
-                continue
+                if person.json()[DATA][EVENT_PERSON][NODE] == []:
+                    print("Warning - Invaild registration ID. EventPerson can not be resolved.")
+                    continue
 
-        # Option 2 - Search by PID or VT email
-        elif not inputs['PID'] == '':
-            pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
-            people_filter = {'emails': pid}
-            person = query.people_filter_query(EVENT_ID, people_filter)
-            print(person.json())
+            # Option 2 - Search by PID or VT email
+            elif not inputs['PID'] == '':
+                pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
+                people_filter = {'emails': pid}
+                person = query.people_filter_query(EVENT_ID, people_filter)
+                print(person.json())
 
-            if person.json()[DATA][EVENT_PERSON][NODE] == []:
-                print("Warning - Invaild PID/VT email. EventPerson can not be resolved.")
-                continue
+                if person.json()[DATA][EVENT_PERSON][NODE] == []:
+                    print("Warning - Invaild PID/VT email. EventPerson can not be resolved.")
+                    continue
 
-        else:
-            print("Warning - No Input Detected (Content API Query)")
-            continue
-
-        eventPerson = person.json()[DATA][EVENT_PERSON][NODE][0]
-        # assign from the query result
-        first_name = eventPerson[FIRST_NAME]
-        last_name = eventPerson[LAST_NAME]
-        email = eventPerson[EMAIL]
-        if not eventPerson[PHONE_NUMBER] == []:
-            phone_number = eventPerson[PHONE_NUMBER][0]["number"]
-
-        # Fetch major & year from fields - only the first major is recorded
-        fields = eventPerson['withEvent']['fields']
-        # first_major_flag = True
-        for field in fields:
-            # if first_major_flag and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Major':
-            if (DEFINITION in field and field[DEFINITION]['id'] ==  MAJOR_ID):
-                # MultipleSelectField query structure
-                major = field[TRANSLATION][0]['value']
-                first_major_flag = False
-
-            # if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
-            if (DEFINITION in field and field[DEFINITION]['id'] == YEAR_ID):
-
-                # SelectField query structure
-                year = field[TRANSLATION][0]['value']
-
-            # if not inputs["OWGLConfirm"] and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
-            #     # SelectField query structure
-            #     graduation_time = field[TRANSLATION][0]['value']
-            #     if not graduation_time == "None" or not graduation_time == "Other":
-            #         graduation_year = int(graduation_time[-4:])
-            #         if "Spring" in graduation_time:
-            #             graduation_year -= 1
-            #         year = NameTagConfig.years[3 + GeneralConfig.CURRENT_YEAR - graduation_year]
-
-            #     else: year = graduation_time
-
-        badges = eventPerson['withEvent']['badges']
-        regis_id = badges[0]['barcode']
-
-    # Parse from querying the backup database
-    elif is_student_id:
-        # Option 1 - Search by registration ID or Student ID
-        if not inputs['BRID'] == '':
-            #people_record = {THIS IS WHERE I QUERY BY HOKIE P}
-            if people_record is not None:
-                people_row = people_record.row
             else:
-                print("Warning - Invaild registration ID. EventPerson can not be resolved in Backup Database.")
+                print("Warning - No Input Detected (Content API Query)")
                 continue
 
-        #elif not inputs['PID'] == '':
-        #    pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
-        #    #people_record = backup_db_sheet.find(pid)
-        #    if people_record is not None:
-        #        people_row = people_record.row
-        #    else:
-        #        print("Warning - Invaild PID/VT email. EventPerson can not be resolved in Backup Database.")
-        #        continue
+            eventPerson = person.json()[DATA][EVENT_PERSON][NODE][0]
+            # assign from the query result
+            first_name = eventPerson[FIRST_NAME]
+            last_name = eventPerson[LAST_NAME]
+            email = eventPerson[EMAIL]
+            if not eventPerson[PHONE_NUMBER] == []:
+                phone_number = eventPerson[PHONE_NUMBER][0]["number"]
 
-        # else:
-        #     print("Warning - No Input Detected (Backup Database Query)")
-        #     continue
+            # Fetch major & year from fields - only the first major is recorded
+            fields = eventPerson['withEvent']['fields']
+            # first_major_flag = True
+            for field in fields:
+                # if first_major_flag and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Major':
+                if (DEFINITION in field and field[DEFINITION]['id'] ==  MAJOR_ID):
+                    # MultipleSelectField query structure
+                    major = field[TRANSLATION][0]['value']
+                    first_major_flag = False
 
-    # Parse directly from manual inputs
-    else:
-        first_name, last_name, major, year, regis_id, email, phone_number = \
-            [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
-        if email == "" or phone_number == "":
-            print("Warning - No Contact Information Provided")
-            continue
+                # if DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'School Year':
+                if (DEFINITION in field and field[DEFINITION]['id'] == YEAR_ID):
 
-    # Special cases assignments
-    if "freshman" in year.lower():
-        major = NameTagConfig.majors[NameTagConfig.major_index["GE"]]
+                    # SelectField query structure
+                    year = field[TRANSLATION][0]['value']
 
-    if "construction" in major.lower() and "management" in major.lower():
-        major = NameTagConfig.majors[NameTagConfig.major_index["CEM"]]
+                # if not inputs["OWGLConfirm"] and DEFINITION in field and field[DEFINITION][TRANSLATION][0]['name'] == 'Graduation Year':
+                #     # SelectField query structure
+                #     graduation_time = field[TRANSLATION][0]['value']
+                #     if not graduation_time == "None" or not graduation_time == "Other":
+                #         graduation_year = int(graduation_time[-4:])
+                #         if "Spring" in graduation_time:
+                #             graduation_year -= 1
+                #         year = NameTagConfig.years[3 + GeneralConfig.CURRENT_YEAR - graduation_year]
 
-    if "computer" in major.lower() and "science" in major.lower():
-        major = NameTagConfig.majors[NameTagConfig.major_index["CS"]]
+                #     else: year = graduation_time
 
-    if "building" in major.lower() and "construction" in major.lower():
-        major = NameTagConfig.majors[NameTagConfig.major_index["BUC"]]
+            badges = eventPerson['withEvent']['badges']
+            regis_id = badges[0]['barcode']
 
-    # Terminal output for student info
-    print('#'*10 + ' NameTag Info ' + '#'*10 +
-          f"\n{'First Name:':<20}{first_name}" + f"\n{'Last Name:':<20}{last_name}" +
-          f"\n{'Major:':<20}{major}" + f"\n{'Year:':<20}{year}" +
-          f"\n{'Registration ID:':<20}{regis_id}\n")
+        # Parse from querying the backup database
+        elif is_student_id:
+            # Option 1 - Search by registration ID or Student ID
+            if not inputs['BRID'] == '':
+                #people_record = {THIS IS WHERE I QUERY BY HOKIE P}
+                if people_record is not None:
+                    people_row = people_record.row
+                else:
+                    print("Warning - Invaild registration ID. EventPerson can not be resolved in Backup Database.")
+                    continue
 
-    # Log the query or inputed student record to a pre-established Google Sheet
-    now_datetime = datetime.now()
-    now_date = now_datetime.strftime("%m/%d/%Y")
-    now_time = now_datetime.strftime("%H:%M:%S")
-    organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
-    #work_sheet.update(_cell_range(row_insert), organized_data)
+            #elif not inputs['PID'] == '':
+            #    pid = inputs['PID'] if '@' in inputs['PID'] else inputs['PID'] + '@vt.edu'
+            #    #people_record = backup_db_sheet.find(pid)
+            #    if people_record is not None:
+            #        people_row = people_record.row
+            #    else:
+            #        print("Warning - Invaild PID/VT email. EventPerson can not be resolved in Backup Database.")
+            #        continue
 
-    # Terminal output for Google Sheet log Confirmation
-    print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
+            # else:
+            #     print("Warning - No Input Detected (Backup Database Query)")
+            #     continue
 
-    if printer is not None and label is not None:
-        try:
-            # Print job
-            label.SetField("fn", first_name)
-            label.SetField("ln", last_name)
-            # label.SetField("ln_1", '')
-            label.SetField("y", year)
-            label.SetField("m", major)
-            label.SetField("BARCODE", regis_id)
+        # Parse directly from manual inputs
+        else:
+            first_name, last_name, major, year, regis_id, email, phone_number = \
+                [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
+            if email == "" or phone_number == "":
+                print("Warning - No Contact Information Provided")
+                continue
 
-            printer.StartPrintJob()
-            printer.Print(1, False)
-            printer.EndPrintJob()
+        # Special cases assignments
+        if "freshman" in year.lower():
+            major = NameTagConfig.majors[NameTagConfig.major_index["GE"]]
 
-            print("\nPrint Success\n")
+        if "construction" in major.lower() and "management" in major.lower():
+            major = NameTagConfig.majors[NameTagConfig.major_index["CEM"]]
 
-        except Exception as err:
-            printer.EndPrintJob()
-            print("\nPrinting Not Resolved - ", err, "\n")
+        if "computer" in major.lower() and "science" in major.lower():
+            major = NameTagConfig.majors[NameTagConfig.major_index["CS"]]
 
-    # Index increment
-    #row_insert += 1
+        if "building" in major.lower() and "construction" in major.lower():
+            major = NameTagConfig.majors[NameTagConfig.major_index["BUC"]]
+
+        # Terminal output for student info
+        print('#'*10 + ' NameTag Info ' + '#'*10 +
+            f"\n{'First Name:':<20}{first_name}" + f"\n{'Last Name:':<20}{last_name}" +
+            f"\n{'Major:':<20}{major}" + f"\n{'Year:':<20}{year}" +
+            f"\n{'Registration ID:':<20}{regis_id}\n")
+
+        # Log the query or inputed student record to a pre-established Google Sheet
+        now_datetime = datetime.now()
+        now_date = now_datetime.strftime("%m/%d/%Y")
+        now_time = now_datetime.strftime("%H:%M:%S")
+        organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
+        #work_sheet.update(_cell_range(row_insert), organized_data)
+
+        # Terminal output for Google Sheet log Confirmation
+        print('#'*10 + ' Query Logged ' + '#'*10 + '\n')
+
+        if printer is not None and label is not None:
+            try:
+                # Print job
+                label.SetField("fn", first_name)
+                label.SetField("ln", last_name)
+                # label.SetField("ln_1", '')
+                label.SetField("y", year)
+                label.SetField("m", major)
+                label.SetField("BARCODE", regis_id)
+
+                printer.StartPrintJob()
+                printer.Print(1, False)
+                printer.EndPrintJob()
+
+                print("\nPrint Success\n")
+
+            except Exception as err:
+                printer.EndPrintJob()
+                print("\nPrinting Not Resolved - ", err, "\n")
+
+        # Index increment
+        #row_insert += 1
 
 #work_sheet.update('A' + str(row_insert), GeneralConfig.GOOGLE_LOG_END_TOKEN)
 if printer is not None:
