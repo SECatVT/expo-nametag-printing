@@ -85,12 +85,8 @@ backup_major = [_text_creater("Major"),
 backup_year = [_text_creater("Year"),
             sg.Combo(list(NameTagConfig.years), default_value="Freshman", key="YR")]
 backup_r_id = [_text_creater("Registration ID"),
-             sg.InputText(do_not_clear=False, default_text="123456", key="RID")]
-backup_email = [_text_creater("VT Email"),
-             sg.InputText(do_not_clear=False, key="VTEML")]
-backup_phone = [_text_creater("Phone Number"),
-             sg.InputText(do_not_clear=False, key="PHONE")]
-backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id, backup_email, backup_phone]
+             sg.InputText(do_not_clear=False, default_text="", key="RID")]
+backup = [backup_fn, backup_ln, backup_major, backup_year, backup_r_id]
 
 layout = [
     [sg.Text("Option 1 - Scan Swapcard Badge Code or the Code from their Confirmation Email")], input1,
@@ -116,7 +112,6 @@ while True:
             break
 
         first_name, last_name, major, year, regis_id = '', '', '', '', ''
-        email, phone_number = '', ''
 
         is_student_id, student_id = _is_hokiep_scan(inputs['BRID'])
         
