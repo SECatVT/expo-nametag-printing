@@ -206,11 +206,8 @@ while True:
 
         # Parse directly from manual inputs
         else:
-            first_name, last_name, major, year, regis_id, email, phone_number = \
-                [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID','VTEML','PHONE')]
-            if email == "" or phone_number == "":
-                print("Warning - No Contact Information Provided")
-                continue
+            first_name, last_name, major, year, regis_id = \
+                [inputs[k] for k in ('FN', 'LN', 'MJ', 'YR', 'RID')]
 
         # Special cases assignments
         if "freshman" in year.lower():
@@ -235,7 +232,7 @@ while True:
         now_datetime = datetime.now()
         now_date = now_datetime.strftime("%m/%d/%Y")
         now_time = now_datetime.strftime("%H:%M:%S")
-        organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id, email, phone_number]]
+        organized_data = [[now_date, now_time, first_name, last_name, major, year, regis_id]]
         #work_sheet.update(_cell_range(row_insert), organized_data)
 
         # Terminal output for Google Sheet log Confirmation
