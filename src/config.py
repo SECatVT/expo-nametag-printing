@@ -1,6 +1,6 @@
 class GeneralConfig:
 
-    CURRENT_YEAR = 2024
+    CURRENT_YEAR = 2026
 
     # query structure keys
     DATA = "data"
@@ -131,7 +131,6 @@ class QueryConfig:
                 organization
                 websiteUrl
                 biography
-                tags
                 groups {
                     name
                 }
@@ -207,7 +206,6 @@ class QueryConfig:
                 organization
                 websiteUrl
                 biography
-                tags
                 groups {
                     name
                 }
