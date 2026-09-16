@@ -50,9 +50,14 @@ def _printer_set_up():
         print("Before Dispatch")
         dymo_printer = Dispatch("Dymo.DymoAddIn")
         print ("After Dispatch")
-        print(dymo_printer.GetDymoPrinters())
+        printers_string = dymo_printer.GetDymoPrinters()
+        print(printers_string)
+        if printers_string:
+            printer_list = printers_string.split('|')
+            dymo_printer.SelectPrinter(printer_list[0])
+        print("Selected:" + printer_list[0])
+
         label_path = pathlib.Path("./src/label/student_badge_v3.label")
-        dymo_printer.SelectPrinter(dymo_printer.GetDymoPrinters())
         dymo_printer.Open(label_path)
         dymo_label = Dispatch("Dymo.DymoLabels")
 
